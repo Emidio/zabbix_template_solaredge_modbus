@@ -9,6 +9,7 @@ https://github.com/nmakel/solaredge_modbus
 
 pip3 install solaredge_modbus
 
+You need to copy the two scripts in your externalscripts zabbix folder, adjust path in solaredge_mbus.sh.
 
 Import Zabbix template. Create a new host (doesn't matter interface, I set SNMP), assign the template, set the correct macros:
 
