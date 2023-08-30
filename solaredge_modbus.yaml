@@ -1,0 +1,240 @@
+zabbix_export:
+  version: '6.2'
+  date: '2023-08-30T12:52:40Z'
+  template_groups:
+    -
+      uuid: 3dcd5bbe90534f9e8eb5c2d53756af63
+      name: Templates/Power
+  templates:
+    -
+      uuid: a8cae0ad61494cbabd76b9ddeb3bd94f
+      template: solaredge_modbus
+      name: 'SolarEdge (ModBUS)'
+      groups:
+        -
+          name: Templates/Power
+      items:
+        -
+          uuid: 33a55bfeffa0410da098b90f41d47c71
+          name: solaredge.modbus.firmware
+          type: DEPENDENT
+          key: solaredge.modbus.firmware
+          delay: '0'
+          trends: '0'
+          value_type: TEXT
+          preprocessing:
+            -
+              type: JSONPATH
+              parameters:
+                - $.c_version
+          master_item:
+            key: 'solaredge_mbus.sh[{$SOLAREDGE_IP}, {$SOLAREDGE_MODBUS_PORT}]'
+          triggers:
+            -
+              uuid: bd236c668e984e2caec57dafcfe7e5f2
+              expression: change(/solaredge_modbus/solaredge.modbus.firmware)<>0
+              name: solaredge.modbus.trigger.firmware
+              event_name: 'SolarEdge firmware changed'
+              priority: INFO
+              manual_close: 'YES'
+        -
+          uuid: c00d6f189b05479e94dae2342a84afe3
+          name: solaredge.modbus.frequency
+          type: CALCULATED
+          key: solaredge.modbus.frequency
+          value_type: FLOAT
+          params: 'last(//solaredge.modbus.frequencynum)*power(10, last(//solaredge.modbus.frequencyscale))'
+        -
+          uuid: a66ca4ba1481489b915940fdb57e81ff
+          name: solaredge.modbus.frequencynum
+          type: DEPENDENT
+          key: solaredge.modbus.frequencynum
+          delay: '0'
+          value_type: FLOAT
+          preprocessing:
+            -
+              type: JSONPATH
+              parameters:
+                - $.frequency
+          master_item:
+            key: 'solaredge_mbus.sh[{$SOLAREDGE_IP}, {$SOLAREDGE_MODBUS_PORT}]'
+        -
+          uuid: c1c9419d0b8641ca82b4cd8a0dd983c5
+          name: solaredge.modbus.frequencyscale
+          type: DEPENDENT
+          key: solaredge.modbus.frequencyscale
+          delay: '0'
+          value_type: FLOAT
+          preprocessing:
+            -
+              type: JSONPATH
+              parameters:
+                - $.frequency_scale
+          master_item:
+            key: 'solaredge_mbus.sh[{$SOLAREDGE_IP}, {$SOLAREDGE_MODBUS_PORT}]'
+        -
+          uuid: 4df6e92259f746c3a90357c0fa231923
+          name: solaredge.modbus.powerac
+          type: CALCULATED
+          key: solaredge.modbus.powerac
+          value_type: FLOAT
+          units: W
+          params: 'last(//solaredge.modbus.poweracnum)*power(10, last(//solaredge.modbus.poweracscale))'
+        -
+          uuid: d389237bae5e45d7818643fd27a018ad
+          name: solaredge.modbus.poweracnum
+          type: DEPENDENT
+          key: solaredge.modbus.poweracnum
+          delay: '0'
+          value_type: FLOAT
+          preprocessing:
+            -
+              type: JSONPATH
+              parameters:
+                - $.power_ac
+          master_item:
+            key: 'solaredge_mbus.sh[{$SOLAREDGE_IP}, {$SOLAREDGE_MODBUS_PORT}]'
+        -
+          uuid: a0b9cc92e8884d218dcecf05a8d80cd4
+          name: solaredge.modbus.poweracscale
+          type: DEPENDENT
+          key: solaredge.modbus.poweracscale
+          delay: '0'
+          value_type: FLOAT
+          preprocessing:
+            -
+              type: JSONPATH
+              parameters:
+                - $.power_ac_scale
+          master_item:
+            key: 'solaredge_mbus.sh[{$SOLAREDGE_IP}, {$SOLAREDGE_MODBUS_PORT}]'
+        -
+          uuid: 61d9f528a8c3446394ff98378664671a
+          name: solaredge.modbus.powerdc
+          type: CALCULATED
+          key: solaredge.modbus.powerdc
+          value_type: FLOAT
+          units: W
+          params: 'last(//solaredge.modbus.powerdcnum)*power(10, last(//solaredge.modbus.powerdcscale))'
+        -
+          uuid: 534019cf9d4044c0b25c501a0666e632
+          name: solaredge.modbus.powerdcnum
+          type: DEPENDENT
+          key: solaredge.modbus.powerdcnum
+          delay: '0'
+          value_type: FLOAT
+          preprocessing:
+            -
+              type: JSONPATH
+              parameters:
+                - $.power_dc
+          master_item:
+            key: 'solaredge_mbus.sh[{$SOLAREDGE_IP}, {$SOLAREDGE_MODBUS_PORT}]'
+        -
+          uuid: 7eb48b43f47a4e80bca3f4a69191b4b8
+          name: solaredge.modbus.powerdcscale
+          type: DEPENDENT
+          key: solaredge.modbus.powerdcscale
+          delay: '0'
+          value_type: FLOAT
+          preprocessing:
+            -
+              type: JSONPATH
+              parameters:
+                - $.power_dc_scale
+          master_item:
+            key: 'solaredge_mbus.sh[{$SOLAREDGE_IP}, {$SOLAREDGE_MODBUS_PORT}]'
+        -
+          uuid: 8ecb89c3de5446c0af6b1ffde8274cec
+          name: solaredge.modbus.temperature
+          type: CALCULATED
+          key: solaredge.modbus.temperature
+          value_type: FLOAT
+          params: 'last(//solaredge.modbus.temperaturenum)*power(10, last(//solaredge.modbus.temperaturescale))'
+        -
+          uuid: 95cdc8d1d54d4e8794af9eb4a5e3d27e
+          name: solaredge.modbus.temperaturenum
+          type: DEPENDENT
+          key: solaredge.modbus.temperaturenum
+          delay: '0'
+          value_type: FLOAT
+          units: C
+          preprocessing:
+            -
+              type: JSONPATH
+              parameters:
+                - $.temperature
+          master_item:
+            key: 'solaredge_mbus.sh[{$SOLAREDGE_IP}, {$SOLAREDGE_MODBUS_PORT}]'
+        -
+          uuid: 81ee89979f5740bc998c3cc18a5c9d46
+          name: solaredge.modbus.temperaturescale
+          type: DEPENDENT
+          key: solaredge.modbus.temperaturescale
+          delay: '0'
+          value_type: FLOAT
+          preprocessing:
+            -
+              type: JSONPATH
+              parameters:
+                - $.temperature_scale
+          master_item:
+            key: 'solaredge_mbus.sh[{$SOLAREDGE_IP}, {$SOLAREDGE_MODBUS_PORT}]'
+        -
+          uuid: 3b4ea849fc6742ed8709fe1ee8975ad1
+          name: solaredge.modbus.voltage
+          type: CALCULATED
+          key: solaredge.modbus.voltage
+          value_type: FLOAT
+          units: V
+          params: 'last(//solaredge.modbus.voltagenum)*power(10, last(//solaredge.modbus.voltagescale))'
+          triggers:
+            -
+              uuid: 5347709eec9a47c994f50def57ad7fac
+              expression: last(/solaredge_modbus/solaredge.modbus.voltage)<207
+              name: solaredge.modbus.trigger.voltage.low
+              event_name: 'Low voltage on Solaredge'
+              priority: WARNING
+        -
+          uuid: 53e5e68b2bf14e2b936cace767d43c7f
+          name: solaredge.modbus.voltagenum
+          type: DEPENDENT
+          key: solaredge.modbus.voltagenum
+          delay: '0'
+          value_type: FLOAT
+          preprocessing:
+            -
+              type: JSONPATH
+              parameters:
+                - $.meters.Meter1.voltage_ln
+          master_item:
+            key: 'solaredge_mbus.sh[{$SOLAREDGE_IP}, {$SOLAREDGE_MODBUS_PORT}]'
+        -
+          uuid: bb6b9aadd06c4cf0ae5d25c2cdc3c98d
+          name: solaredge.modbus.voltagescale
+          type: DEPENDENT
+          key: solaredge.modbus.voltagescale
+          delay: '0'
+          value_type: FLOAT
+          preprocessing:
+            -
+              type: JSONPATH
+              parameters:
+                - $.meters.Meter1.voltage_scale
+          master_item:
+            key: 'solaredge_mbus.sh[{$SOLAREDGE_IP}, {$SOLAREDGE_MODBUS_PORT}]'
+        -
+          uuid: fbd41b2f05704fa7b1acea1fe05dd9ee
+          name: solaredge.modbus.json
+          type: EXTERNAL
+          key: 'solaredge_mbus.sh[{$SOLAREDGE_IP}, {$SOLAREDGE_MODBUS_PORT}]'
+          history: 3d
+          trends: '0'
+          value_type: TEXT
+      macros:
+        -
+          macro: '{$SOLAREDGE_IP}'
+          value: 192.168.0.100
+        -
+          macro: '{$SOLAREDGE_MODBUS_PORT}'
+          value: '1502'
