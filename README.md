@@ -13,8 +13,8 @@ You need to copy the two scripts in your externalscripts zabbix folder, adjust p
 
 Import Zabbix template. Create a new host (doesn't matter interface, I set SNMP), assign the template, set the correct macros:
 
-{$SOLAREDGE_ID}        Your Solaredge installation ID (the one you see loggin in the monitoring website after registration).
-{$SOLAREDGE_APIKEY}    Generate it from the SolaEdge monitoring website after loggin in.
-{$SOLAREDGE_IP}        Your SolaEdge inverter IP address.
+* {$SOLAREDGE_ID}        Your Solaredge installation ID (the one you see loggin in the monitoring website after registration).
+* {$SOLAREDGE_APIKEY}    Generate it from the SolaEdge monitoring website after loggin in.
+* {$SOLAREDGE_IP}        Your SolaEdge inverter IP address.
 
 Tested using Zabbix 6.2, Powerwall 2 and SolarEdge HD-Wawe SE6000H. Dashboards in Grafana using Zabbix plugin by Alexander Zobnin.
